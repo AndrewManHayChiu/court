@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+import os
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,12 +33,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    # 'unfold', # before django.contrib.admin
-    # "unfold.contrib.filters",  # optional, if special filters are needed
-    # "unfold.contrib.forms",  # optional, if special form elements are needed
-    # "unfold.contrib.import_export",  # optional, if django-import-export package is used
-    # "unfold.contrib.guardian",  # optional, if django-guardian package is used
-    # "unfold.contrib.simple_history",  # optional, if django-simple-history package is used
     'clubs.apps.ClubsConfig',
     'events.apps.EventsConfig',
     'django.contrib.admin',
@@ -45,6 +41,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    'wagtail.contrib.forms',
+    'wagtail.contrib.redirects',
+    'wagtail.embeds',
+    'wagtail.sites',
+    'wagtail.users',
+    'wagtail.snippets',
+    'wagtail.documents',
+    'wagtail.images',
+    'wagtail.search',
+    'wagtail.admin',
+    'wagtail',
+
+    'modelcluster',
+    'taggit',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +66,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
 ]
 
 ROOT_URLCONF = 'court.urls'
@@ -120,10 +133,20 @@ USE_I18N = True
 USE_TZ = True
 
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATIC_URL = 'static/'
+
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+WAGTAIL_SITE_NAME = 'My Example Site'
+WAGTAILADMIN_BASE_URL = 'http://example.com'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

@@ -9,7 +9,10 @@ class Event(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True)
     date = models.DateField()
-    player_limit = models.IntegerField()
+    player_limit = models.IntegerField(default=2, null=True, blank=True)
+    created_datetime = models.DateTimeField(default=timezone.now)
+    updated_datetime = models.DateTimeField(default=timezone.now)
+    deleted_datetime = models.DateTimeField(null=True, blank=True)
     
     def __str__(self):
         return self.name
@@ -17,8 +20,9 @@ class Event(models.Model):
 class EventRsvp(models.Model):
     event = models.ForeignKey('events.Event', on_delete=models.CASCADE)
     user = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
-    rsvp_datetime = models.DateTimeField(default=timezone.now)
     rsvp = models.BooleanField(default=False)
+    created_datetime = models.DateTimeField(default=timezone.now)
+    updated_datetime = models.DateTimeField(default=timezone.now)
     
     def __str__(self):
         return self.user.username + ' - ' + self.event.name
