@@ -1,0 +1,97 @@
+{% load static %}
+<nav class="navbar bg-body-tertiary fixed-top">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+      
+      <!-- Logo on the left hand side -->
+      <div>
+        <a class="navbar-brand" href="#"></a>
+      </div>
+      
+      <div>
+        <a href="{% url 'core:home' %}">
+          <img src="{% static 'images\shuttle-coloured.svg' %}" href="" alt="Logo" width="30" height="30">
+        </a>
+      </div>
+      
+      <div>
+        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+      
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasNavbarLabel"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        
+        <div class="offcanvas-body">
+          <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+            
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="{% url 'core:home' %}">Home</a>
+            </li>
+            
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="{% url 'members:profile_detail' user.id %}">My profile</a>
+            </li>
+            {% endif %}
+
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="{% url 'locations:location' %}">Stadiums</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="{% url 'clubs:club' %}">Clubs</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="{% url 'sport_sessions:sessions' %}">
+                Sessions 
+                <span class="text-muted small">(Socials)</span>
+              </a>
+            </li>
+            
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'matches:match' %}">Matches</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'members:profile' %}">Players</a>
+            </li>
+            
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'core:pricing' %}">Pricing</a>
+            </li>
+
+            {% if user.is_authenticated %}
+              <li class="nav-item">
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-link nav-link">Log Out</button>
+                </form>
+            {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'members:signup' %}">Register</a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">Log In</a>
+              </li>
+            {% endif %}
+
+          </ul>
+          
+          <!-- SEARCH BAR 
+          <form class="d-flex mt-3" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+          -->
+        
+        </div>
+      </div>
+    </div>
+  </nav>

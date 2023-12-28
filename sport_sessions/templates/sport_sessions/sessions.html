@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <img src="{% static 'images\racquet-shuttlecock.svg' %}"alt="Logo" width="50" height="50">
+    <!-- Socials -->
+{% endblock %}
+
+{% block content %}
+    <br>
+    <h4>Upcoming sessions</h4>
+    <p>If you want to create a session, go to your club's page and click on the 'Add session' button (you'll need to be a club organiser first).</p>
+    <br>
+
+    {% if upcoming_sessions and upcoming_sessions|length > 0 %}        
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Club</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">State</th>
+                    <th scope="col">RSVP Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for session in sessions %}
+                    <tr>
+                        <td><a href="{% url 'sport_sessions:session_detail' session.id %}">{{ session.id }}</a></td>
+                        <td><a href="{% url 'clubs:club_detail' session.club.id %}">{{ session.club }}</a></td>
+                        <td>{{ session.date }}</td>
+                        <td>{{ session.start_time }}</td>
+                        <td>{{ session.club.location }}</td>
+                        <td>{{ session.club.location.state }}</td>
+                        <td>{{ session.club.rsvp_required }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <p>Looks like there are no sessions to play at...</p>
+    {% endif %}
+    <br>
+
+    <h4>Past Sessions</h4>
+    <br>
+
+    {% if past_sessions and past_sessions|length > 0 %}
+        <table class="table">
+            <thead>
+                <th scope="col">ID</th>
+                <th scope="col">Club</th>
+                <th scope="col">Date</th>
+                <th scope="col">Time</th>
+                <th scope="col">Location</th>
+                <th scope="col">State</th>
+            </thead>
+            <tbody>
+                {% for session in past_sessions %}
+                    <tr>
+                        <td><a href="{% url 'sport_sessions:session_detail' session.id %}">{{ session.id }}</a></td>
+                        <td><a href="{% url 'clubs:club_detail' session.club.id %}">{{ session.club }}</a></td>
+                        <td>{{ session.date }}</td>
+                        <td>{{ session.start_time }}</td>
+                        <td>{{ session.club.location }}</td>
+                        <td>{{ session.club.location.state }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+{% endblock %}

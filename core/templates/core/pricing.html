@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    <!-- <img src="{% static 'images\home.svg' %}" alt="Logo" width="30" height="30"> -->
+    Pricing
+{% endblock %}
+
+{% block content %}
+    <div>
+      <p>The site is still in development, so it's still free to use!</p>
+      <p>Players wishing to RSVP to socials can join for free.</p>
+      <p>Those who want to organise sessions or tournaments will need to register as a club organiser.</p>
+    </div>
+
+    <div class="card-deck mb-3 text-center">
+        
+        <div class="card mb-4 box-shadow">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Free</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">$0 <small class="text-muted">/ mo</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Record matches</li>
+              <li>RSVP to sessions</li>
+              <li>Basic player stats</li>
+              <li>Help via Discord</li>
+            </ul>
+            <a class="btn btn-lg btn-block btn-outline-primary" href="{% url 'members:signup' %}"">Sign up now</a>
+          </div>
+        </div>
+        
+        <div class="card mb-4 box-shadow">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Club Organiser</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title"><s>$1</s> $0 <small class="text-muted">/ session</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li><b>Free during Alpha stage</b></li>
+              <li>Everything in Free tier</li>
+              <li>Organise sport sessions</li>
+              <li>Manage RSVP and waiting list</li>
+            </ul>
+            <a class="btn btn-lg btn-block btn-outline-primary">Get started</a>
+          </div>
+        </div>
+        
+        <!-- <div class="card mb-4 box-shadow">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Tournament Organiser</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">$50 <small class="text-muted">/ Tournament</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Arrange tournaments</li>
+              <li>Collect payments</li>
+              <li>Scoring</li>
+              <li></li>
+            </ul>
+            <a class="btn btn-lg btn-block btn-primary">Contact us</a>
+          </div>
+        </div> -->
+
+      </div>
+
+{% endblock %}

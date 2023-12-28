@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    <!-- <img src="{% static 'images\home.svg' %}" alt="Logo" width="30" height="30"> -->
+    <!-- Home -->
+{% endblock %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+        <h1>Hey {{ user.username }}!</h1>
+        <br>
+        <div class="row text-center">
+            <div class="col">
+                <a href="{% url 'matches:add_match' %}" class="btn btn-light custom-profile-button-size">Record match</a>
+            </div>
+            <div class="col">
+                <a href="" class="btn btn-light custom-profile-button-size">Sessions</a>
+            </div>
+        </div>
+        <h4>Upcoming sessions</h4>
+        <br>
+        {% if upcoming_sessions|length == 0 %}
+            <p>You don't have any upcoming sessions.</p>
+        {% else %}
+            <p>Here are your upcoming sessions:</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Club</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Location</th>
+                </thead>
+                <tbody>
+                    {% for session in upcoming_sessions %}
+                        <tr>
+                            <td><a href="{% url 'sport_sessions:session_detail' session.id %}">{{ session.session.club }}</a></td>
+                            <td>{{ session.session.date }}</td>
+                            <td>{{ session.session.start_time }} - {{ session.session.end_time }}</td>
+                            <td>{{ session.session.club.location }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+        <br>
+        
+        <h4>Recent Matches</h4>
+        <br>
+        {% if matches|length == 0 %}
+            <p>You don't have any matches.</p>
+        {% else %}
+            <p>Here are your recent matches:</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Result</th>
+                </thead>
+                <tbody>
+                    {% for match in matches %}
+                        <tr>
+                            <td>{{ match.id }}</a></td>
+                            <td>{{ match.date }}</td>
+                            <td>{{ match.set }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+        
+
+
+    {% else %}
+        <h1 style="text-align: center;">THE COURT</h1>
+        <br>
+        <p>The Court is the home of badminton sessions.</p>
+        <p>Use the navigation bar to:</p>
+        <li>Find some <a href="{% url 'clubs:club' %}">clubs</a></li>
+        <li>Find some social sessions</li>
+        <br>
+        <p>If you want to record your matches or RSVP to a session, you'll need to
+            <a href="{%url 'login' %}">log in</a> or 
+            <a href="{% url 'members:signup' %}">sign up</a>.
+        </p>
+        
+    {% endif %}
+    <br>
+    <br>
+    <br>
+    <h4>Disclaimer</h4>
+    <p>This app is still in DEVELOPMENT.</p>
+    <p>During development, use of this app is free.</p>
+    <p>It also means that:</p> 
+    <li>there are bugs and broken links</li>
+    <li>any data recorded may be deleted</li>
+    <br>
+    <p>If you want a better and more seamless experience, feel free to wait until the Beta stage.</p>
+    <h5>Want to be an early adoper?</h5>
+    <p>You can help improve the app by providing feedback or suggestions at the <a href="https://discord.gg/Qk9wVq67" target="_blank">Discord channel</a>.</p>
+
+{% endblock %}

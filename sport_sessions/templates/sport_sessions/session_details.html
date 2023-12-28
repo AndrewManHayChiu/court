@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Session details
+{% endblock %}
+
+{% block content %}
+
+    {% if session %}
+        {% if user.is_authenticated and is_organiser %}
+            <div>
+                <a class="btn btn-dark btn-sm float-end" href="{% url 'sport_sessions:edit_session' session.id%}">Edit</a>
+            </div>
+        {% endif %}
+        {% if user.is_authenticated and is_organiser %}
+            <div>
+                <a class="btn btn-outline-danger btn-sm float-end" href=""><b>Delete</b></a>
+            </div>
+        {% endif %}
+
+        <table class="table">
+            <thead></thead>
+            <tbody>
+                <tr>
+                    <td><b>ID</b></td>
+                    <td>{{ session.id }}</td>
+                </tr>
+                <tr>
+                    <td><b>Club</b></td>
+                    <td>{{ club.name }}</td>
+                </tr>
+                <tr>
+                    <td><b>Description</b></td>
+                    <td>{{ club.description }}</td>
+                </tr>
+                <tr>
+                    <td><b>Day of the week</b></td>
+                    <td>{{ club.day }}</td>
+                </tr>
+                <tr>
+                    <td><b>Time</b></td>
+                    <td>{{ session.start_time }} - {{ session.end_time }}</td>
+                </tr>
+                <tr>
+                    <td><b>Location</b></td>
+                    <td><a href="{% url 'locations:location_detail' club.location.id%}">{{ club.location }}</a></td>
+                </tr>
+                <tr>
+                    <td><b>Price</b></td>
+                    <td>{{ club.price }}</a></td>
+                </tr>
+                <tr>
+                    <td><b>RSVP Required</b></td>
+                    <td>{{ club.rsvp_required }}</td>
+                </tr>
+                <tr>
+                    <td><b>Organiser</b></td>
+                    <td>
+                        {% for organiser in club.organiser.all %}
+                            <a href="{% url 'members:profile_detail' organiser.id %}">{{ organiser }}</a>
+                        {% endfor %}
+                    </td>
+                </tr> 
+                <tr>
+                    <td><b>Contact</b></td>
+                    <td>{{ club.contact }}</td>
+                </tr>
+                <tr>
+                    <td><b>Max attendees</b></td>
+                    <td>{{ session.max_attendees }}</td>
+                </tr>
+                <tr>
+                    <td><b>Full</b></td>
+                    <td>{{ session.is_full }}</td>
+                </tr>
+                <tr>
+                    <td><b>Notes</b></td>
+                    <td>{{ session.notes }}</td>
+                </tr>
+            </tbody>
+        </table>
+     
+        <br>
+
+        <h3>Attendees</h3>
+
+        {% if user.is_authenticated %}
+            <form action="{% url 'sport_sessions:session_rsvp_create' id=session.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-dark float-end">RSVP</button>
+            </form>
+        {% endif %}
+        
+        <table class="table">
+            <thead></thead>
+            <tbody>
+                <tr>
+                    <td><b>Name</b></td>
+                    {% if user.is_authenticated and is_organiser %}
+                        <td><b>Added</b></td>
+                        <td><b>Action</b></td>
+                    {% endif %}
+                </tr>
+                {% for attendee in attendees.all %}
+                    <tr>
+                        <td>{{ attendee.user }}</td>
+                        {% if user.is_authenticated and is_organiser %}
+                            <td>{{ attendee.created_at }}</td>
+                            <td><button class="btn btn-danger btn-sm" type="submit">Delete</button></td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <br>
+        <br>
+        
+        {% if session.waiting_list_enabled %}
+            <h3>Waiting list</h3>
+            <table class="table">
+                <thead></thead>
+                <tbody>
+                    <tr>
+                        <td><b>Name</b></td>
+                        <td><b>Added</b></td>
+                    </tr>
+                    {% for attendee in waiting_list.all %}
+                        <tr>
+                            <td>{{ attendee.user }}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+        {% endif %}
+    {% else %}
+        <p>Sorry, the session does not exist.</p>
+    {% endif %}
+
+{% endblock %}

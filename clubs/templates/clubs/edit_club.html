@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Edit club
+{% endblock %}
+
+{% block content %}
+    
+    <div class="signup">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-dark">Save</button>
+        </form>
+    </div>
+
+{% endblock %}

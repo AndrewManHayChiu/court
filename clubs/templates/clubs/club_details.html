@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Club details
+{% endblock %}
+
+
+{% block content %}
+
+    {% if club %}
+        {% if user.is_authenticated and is_organiser %}
+            <a class="btn btn-dark float-end" href="{% url 'clubs:edit_club' club.id%}">Edit</a>
+            <p>You can hide your club from public view via the <i>edit</i> button.</p>
+        {% endif %}
+
+        
+
+        <table class="table">
+            <thead></thead>
+            <tbody>
+                <tr>
+                    <td><b>Name</b></td>
+                    <td>{{ club.name }}</td>
+                </tr>
+                <tr>
+                    <td><b>Description</b></td>
+                    <td>{{ club.description }}</td>
+                </tr>
+                <tr>
+                    <td><b>Website</b></td>
+                    <td>{{ club.website }}</td>
+                </tr>
+                <tr>
+                    <td><b>Day of the week</b></td>
+                    <td>{{ club.day }}</td>
+                </tr>
+                <tr>
+                    <td><b>Time</b></td>
+                    <td>{{ club.time }}</td>
+                </tr>
+                <tr>
+                    <td><b>Location</b></td>
+                    <td>{{ club.location }}</td>
+                </tr>
+                <tr>
+                    <td><b>Price</b></td>
+                    <td>{{ club.price }}</td>
+                </tr>
+                <tr>
+                    <td><b>RSVP Required</b></td>
+                    <td>{{ club.rsvp_required|yesno}}</td>
+                </tr>
+                <tr>
+                    <td><b>Organiser</b></td>
+                    <td>
+                        {% for organiser in club.organiser.all %}
+                            {{ organiser.username }}
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Contact</b></td>
+                    <td>{{ club.contact }}</td>
+                </tr>
+                <tr>
+                    {% if is_organiser %}
+                        <td><b>Hidden</b></td>
+                        <td>{{ club.hidden }}</td>
+                    {% endif %}
+                </tr>
+            </tbody>
+        </table>
+        
+        <br>
+
+        
+        <h4>
+            Sessions
+        </h4>
+
+        {% if user.is_authenticated and is_organiser %}
+            <a class="btn btn-dark float-end" href="{% url 'sport_sessions:create_session' %}?club_id={{ club.id }}">Add session</a>
+        {% endif %}
+
+        {% if sessions and sessions|length > 0 %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">No. attendees</th>
+                        <th scope="col">Status</th>
+                        {% if user.is_authenticated and is_organiser %}
+                                <th scope="col">Hide from public</th>
+                            {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for session in sessions %}
+                        <tr>
+                            <td><a href="{% url 'sport_sessions:session_detail' session.id %}">{{ session.id }}</a></td>
+                            <td>{{ session.date }}</td>
+                            <td>{{ session.start_time }} - {{ session.end_time }}</td>
+                            <td>{{ session.rsvps.count }} / {{ session.max_attendees }}</td>
+                            <td>
+                                {% if session.is_full %}
+                                    <button type="button" class="btn btn-primary btn-sm" disabled>Full</button>
+                                {% else %}
+                                <button type="button" class="btn btn-success btn-sm" disabled>Available</button>
+                                {% endif %}
+                            </td>
+                            {% if user.is_authenticated and is_organiser %}
+                                <td>
+                                    <button class="btn btn-secondary btn-sm" type="submit">Hide</button>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            {% if user.is_authenticated and is_organiser %}
+                <p>You don't have any sessions.</p>
+                <p>Want to arrange one now?</p>
+            {% else %}
+                <p>No sessions found.</p>
+            {% endif %}
+            
+        {% endif %}
+        
+    {% else %}
+        <p>Not a valid social club.</p>
+    {% endif %}
+
+    {% endblock %}

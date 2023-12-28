@@ -1,0 +1,17 @@
+nav.navbar {
+    background-color: #fff;
+}
+
+.offcanvas {
+    width: min(180px, 50%) !important;
+}
+
+footer .nav-link {
+    color: grey;
+}
+
+main {
+    flex: 1;
+    padding-top: 100px;
+    min-height: calc(100vh - 130px);
+}

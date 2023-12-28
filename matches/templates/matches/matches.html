@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <img src="{% static 'images\badminton-player-coloured.svg' %}"alt="Logo" width="50" height="50">
+    <img src="{% static 'images\net-coloured.svg' %}"alt="Logo" width="50" height="50">
+    <img src="{% static 'images\badminton-player-coloured.svg' %}"alt="Logo" width="50" height="50" style="transform: scaleX(-1)">
+    <!-- Matches -->
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <a class="btn btn-dark float-end" href="{% url 'matches:add_match' %}">Add match</a>
+    {% endif %}
+    <br>
+    <br>
+    {% if matches and matches|length > 0 %}
+        <br>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Session</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Team 1</th>
+                    <th scope="col">Team 2</th>
+                    <th scope="col">Set 1</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for match in matches %}
+                    <tr>
+                        <td><a href="">{{ match.id }}</a></td>
+                        <td>{{ match.session }}</td>
+                        <td>{{ match.date }}</td>
+                        <td>
+                            {% for player in match.team_one.all %}
+                                {{ player }}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            {% for player in match.team_two.all %}
+                                {{ player }}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            <table>
+                                <thead>
+                                    <!--tr>
+                                      <th>T1</th>
+                                      <th>T2</th>
+                                    </tr-->
+                                </thead>
+                                <tbody>
+                                    {% for set in match.sets.all %}
+                                        <tr>
+                                            <td>{{ set.winner_score }}</td>
+                                            <td>-</td>
+                                            <td>{{ set.loser_score }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+    {% else %}
+        <p>Are you looking for matches?</p>
+        <br>
+        <p>There no matches recorded yet...</p>
+    {% endif %}
+{% endblock %}

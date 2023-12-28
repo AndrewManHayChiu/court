@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Location details
+{% endblock %}
+
+{% block content %}
+    {% if location %}
+        <p><b>Name: </b>{{ location.name }}</p>
+        <p><b>Address: </b>{{ location.address1 }} {{ location.address2 }}</p>
+        <p><b>Suburb: </b>{{ location.suburb }}</p>
+        <p><b>State: </b>{{ location.state }}</p>
+        <p><b>Postal Code: </b>{{ location.zip_code }}</p>
+        <p><b>Country: </b>{{ location.country }}</p>
+    {% endif %}
+
+    <br>
+
+    {% if socials %}
+        <h4>Socials played here</h4>
+        <br>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Day</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">RSVP Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for social in socials %}
+                    <tr>
+                        <td><a href="{% url 'badminton:social_detail' social.id %}">{{ social.name }}</a></td>
+                        <td>{{ social.description }}</td>
+                        <td>{{ social.day }}</td>
+                        <td>{{ social.time }}</td>
+                        <td>{{ social.location }}</td>
+                        <td>{{ social.rsvp_required }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

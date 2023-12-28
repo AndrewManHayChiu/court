@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <img src="{% static 'images\badminton-player-coloured.svg' %}"alt="Logo" width="50" height="50">
+    <!-- Players -->
+{% endblock %}
+
+{% block content %}
+
+    <b>Want to add a friend?</b>
+    <p>They'll need to create an account first.</p>
+    <br>
+
+    <b>Can I change my details?</b>
+    <p>If you need to modify your details, go to My Profile.</p>
+    <br>
+    
+    {% if profile_list and profile_list|length > 0 %}
+    <br>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Handedness</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for profile in profile_list %}
+                <tr>
+                    <td><a href="{% url 'members:profile_detail' profile.id %}">
+                        {{ profile.user.username }}
+                    </a></td>
+                    <td>{{ profile.handedness }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    {% else %}
+        <p>Looks like no one is playing badminton...</p>
+    {% endif %}
+{% endblock %}
