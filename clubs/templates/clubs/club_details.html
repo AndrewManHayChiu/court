@@ -86,9 +86,7 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Time</th>
+                        <th scope="col">Session</th>
                         <th scope="col">No. attendees</th>
                         <th scope="col">Status</th>
                         {% if user.is_authenticated and is_organiser %}
@@ -99,9 +97,7 @@
                 <tbody>
                     {% for session in sessions %}
                         <tr>
-                            <td><a href="{% url 'sport_sessions:session_detail' session.id %}">{{ session.id }}</a></td>
-                            <td>{{ session.date }}</td>
-                            <td>{{ session.start_time }} - {{ session.end_time }}</td>
+                            <td><a href="{% url 'sport_sessions:session_detail' session.uuid %}">{{ session.date }} - {{ session.start_time }} to {{ session.end_time }}</a></td>
                             <td>{{ session.rsvps.count }} / {{ session.max_attendees }}</td>
                             <td>
                                 {% if session.is_full %}

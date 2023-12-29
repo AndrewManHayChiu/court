@@ -1,3 +1,5 @@
+import uuid 
+
 from datetime import datetime
 from django.db import models
 from django.utils import timezone
@@ -28,6 +30,8 @@ class Match(models.Model):
         ('team2', 'Team 2'),
     ]
     
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+    
     session = models.ForeignKey(Session, on_delete=models.CASCADE, blank=True, null=True)
     date = models.DateField(default=timezone.now, null=False, blank=False, editable=True)
     time = models.TimeField(default=timezone.now, blank=True, editable=True)
@@ -35,7 +39,7 @@ class Match(models.Model):
     is_doubles = models.BooleanField(default=True)
     
     team_one = models.ManyToManyField(User, related_name='team_one')
-    team_two = models.ManyToManyField(User, related_name='team_two', blank=True, null=True)
+    team_two = models.ManyToManyField(User, related_name='team_two', blank=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -47,6 +51,11 @@ class Match(models.Model):
     
     def __str__(self):
         return str(self.id)
+    
+    def save(self, *args, **kwargs):
+        if not self.uuid:
+            self.uuid = uuid.uuid4()
+        super().save(*args, **kwargs)
 
 class Set(models.Model):
     

@@ -21,8 +21,8 @@ def session(request):
             'past_sessions': past_sessions,
             })
 
-def session_detail(request, id):
-    session = get_object_or_404(Session, id=id)
+def session_detail(request, uuid):
+    session = get_object_or_404(Session, uuid=uuid)
     club = session.club
     attendees = session.rsvps.all()
     is_organiser = club.organiser.filter(id=request.user.id).exists()
@@ -78,7 +78,9 @@ class SessionRSVPCreateView(generic.View):
         session = get_object_or_404(Session, id=self.kwargs['id'])
         
         if session.max_attendees and session.rsvps.count() >= session.max_attendees:
-            raise ValidationError('Sorry, this session is full.')
+            # raise ValidationError('Sorry, this session is full.')
+            return render(request, 'sport_sessions/session_full.html')
+        
         
         SessionRSVP.objects.create(session=session, user=request.user, is_attending=True)
         

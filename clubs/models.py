@@ -45,7 +45,9 @@ class Club(models.Model):
     location = models.ForeignKey(
         Location, 
         on_delete=models.PROTECT,
-        help_text="If you can't find your club's location, go to the Location page to add a new location first."
+        help_text="If you can't find your club's location, go to the Location page to add a new location first.",
+        null=True,
+        blank=True
         )
     price = models.IntegerField(blank=True, null=True)
     members_price = models.IntegerField(

@@ -9,7 +9,7 @@
     {% if session %}
         {% if user.is_authenticated and is_organiser %}
             <div>
-                <a class="btn btn-dark btn-sm float-end" href="{% url 'sport_sessions:edit_session' session.id%}">Edit</a>
+                <a class="btn btn-dark btn-sm float-end" href="{% url 'sport_sessions:edit_session' session.id %}">Edit</a>
             </div>
         {% endif %}
         {% if user.is_authenticated and is_organiser %}
@@ -43,7 +43,13 @@
                 </tr>
                 <tr>
                     <td><b>Location</b></td>
-                    <td><a href="{% url 'locations:location_detail' club.location.id%}">{{ club.location }}</a></td>
+                    <td>
+                        {% if club.location %}
+                            <a href="{% url 'locations:location_detail' club.location.id %}">{{ club.location }}</a>
+                        {% else %}
+                            None
+                        {% endif %}
+                    </td>
                 </tr>
                 <tr>
                     <td><b>Price</b></td>
@@ -87,10 +93,26 @@
         {% if user.is_authenticated %}
             <form action="{% url 'sport_sessions:session_rsvp_create' id=session.id %}" method="post">
                 {% csrf_token %}
+                <button type="button" class="btn btn-dark float-end" style="margin-left: 10px;" onclick="copyToClipboard()">Share link</button>
                 <button type="submit" class="btn btn-dark float-end">RSVP</button>
             </form>
         {% endif %}
         
+        <script>
+            function copyToClipboard() {
+              var dummy = document.createElement('input'),
+              text = window.location.href;
+            
+              document.body.appendChild(dummy);
+              dummy.value = text;
+              dummy.select();
+              document.execCommand('copy');
+              document.body.removeChild(dummy);
+            
+              alert("Link copied to clipboard");
+            }
+        </script>
+
         <table class="table">
             <thead></thead>
             <tbody>
@@ -129,14 +151,12 @@
                         <tr>
                             <td>{{ attendee.user }}</td>
                         </tr>
-                        <tr>
-                            <td></td>
-                        </tr>
                     {% endfor %}
                 </tbody>
         {% endif %}
-    {% else %}
-        <p>Sorry, the session does not exist.</p>
-    {% endif %}
+    
+        {% else %}
+            <p>Sorry, the session does not exist.</p>
+        {% endif %}
 
 {% endblock %}

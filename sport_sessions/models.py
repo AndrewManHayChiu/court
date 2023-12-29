@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -6,6 +8,8 @@ from clubs.models import Club
 
 # Create your models here.
 class Session(models.Model):
+    # Add uuid as public identifier
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     
     club = models.ForeignKey(Club, on_delete=models.PROTECT)
     date = models.DateField()

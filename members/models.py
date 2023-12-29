@@ -1,3 +1,5 @@
+import uuid
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
@@ -17,6 +19,9 @@ class Profile(models.Model):
         ('L', 'Left'),
         ('O', 'Other')
     ]
+    
+    # Add uuid as public id
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)    
     gender = models.CharField(choices=gender_choices, max_length=6, blank=True, editable=True)
