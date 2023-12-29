@@ -7,7 +7,7 @@ from django.views import generic
 
 from clubs.models import Club
 from .models import Session, SessionRSVP
-from .forms import SessionForm
+from .forms import SessionForm, EditSessionForm
 
 def session(request):
     now = timezone.now()
@@ -60,17 +60,18 @@ def edit_session(request, id):
     session = get_object_or_404(Session, id=id)
     club = session.club
     if request.method == 'POST':
-        form = SessionForm(request.POST, instance=session)
+        form = EditSessionForm(request.POST, instance=session)
         if form.is_valid():
             session = form.save(commit=False)
             session.save()
             return redirect('clubs:club_detail', id=club.id)
     else:
-        form = SessionForm(instance=session)
+        form = EditSessionForm(instance=session)
+    
     return render(
         request, 
         template_name='sport_sessions/edit_session.html', 
-        context={'form': form})
+        context={'form': form, 'session': session})
     
 class SessionRSVPCreateView(generic.View):
     

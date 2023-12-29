@@ -31,17 +31,15 @@
                 <thead>
                     <tr>
                         <th>Club</th>
-                        <th>Date</th>
-                        <th>Time</th>
+                        <th>Session</th>
                         <th>Location</th>
                 </thead>
                 <tbody>
-                    {% for session in upcoming_sessions %}
+                    {% for upcoming_session in upcoming_sessions %}
                         <tr>
-                            <td><a href="{% url 'sport_sessions:session_detail' session.id %}">{{ session.session.club }}</a></td>
-                            <td>{{ session.session.date }}</td>
-                            <td>{{ session.session.start_time }} - {{ session.session.end_time }}</td>
-                            <td>{{ session.session.club.location }}</td>
+                            <td>{{ upcoming_session.session.club }}</td>
+                            <td><a href="{% url 'sport_sessions:session_detail' upcoming_session.session.uuid %}">{{ upcoming_session.session.date }} - {{ upcoming_session.session.start_time }} to {{ upcoming_session.session.end_time }}</a></td>
+                            <td>{{ upcoming_session.session.club.location }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>

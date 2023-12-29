@@ -38,7 +38,47 @@ class SessionForm(forms.ModelForm):
                     'class': 'form-control'}),
             'doubles': forms.CheckboxInput(attrs={'class': 'form-control'}),
         }
+
+class EditSessionForm(forms.ModelForm):
+    
+    class Meta:
+        model = Session
         
+        fields = (
+            'date',
+            'start_time',
+            'end_time',
+            'doubles',
+            'singles',
+            'max_attendees',
+            'notes',
+            'hidden',
+        )
+        
+        widgets = {
+            'date': forms.DateInput(
+                attrs={
+                    'type': 'date',
+                    'placeholder': 'YYYY-MM-DD',
+                    'class': 'form-control'}),
+            'start_time': forms.DateTimeInput(
+                attrs={
+                    'type': 'time',
+                    'placeholder': 'HH:MM',
+                    'class': 'form-control'}),
+            'end_time': forms.DateTimeInput(
+                attrs={
+                    'type': 'time',
+                    'placeholder': 'HH:MM',
+                    'class': 'form-control'}),
+        }
+        
+    def __init__(self, *args, **kwargs):
+        super(EditSessionForm, self).__init__(*args, **kwargs)
+        if self.instance and self.instance.pk:
+            self.initial['start_time'] = self.instance.start_time.strftime('%H:%M')
+            self.initial['end_time'] = self.instance.end_time.strftime('%H:%M')
+
 class SessionRSVPForm(forms.ModelForm):
     non_user_name = forms.CharField(max_length=255, required=False)
     
