@@ -10,4 +10,5 @@ urlpatterns = [
     path('create_session/', views.create_session, name='create_session'),
     path('<int:id>/rsvp/', views.SessionRSVPCreateView.as_view(), name='session_rsvp_create'),
     path('<int:id>/edit/', views.edit_session, name='edit_session'),
+    path('<int:id>/add_to_waitlist/', views.AddToWaitlistView.as_view(), name='add_to_waitlist'),
 ]

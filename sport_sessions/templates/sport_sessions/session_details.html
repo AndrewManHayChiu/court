@@ -136,23 +136,30 @@
         </table>
         
         <br>
-        <br>
         
         {% if session.waiting_list_enabled %}
-            <h3>Waiting list</h3>
-            <table class="table">
-                <thead></thead>
-                <tbody>
+        <h3>Waiting list</h3>
+
+        {% if user.is_authenticated %}
+            <form action="{% url 'sport_sessions:add_to_waitlist' id=session.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-dark float-end">Join Waitlist</button>
+            </form>
+        {% endif %}
+
+        <table class="table">
+            <thead></thead>
+            <tbody>
+                <tr>
+                    <td><b>Name</b></td>
+                    <td><b>Added</b></td>
+                </tr>
+                {% for attendee in waitlist.all %}
                     <tr>
-                        <td><b>Name</b></td>
-                        <td><b>Added</b></td>
+                        <td>{{ attendee.user }}</td>
                     </tr>
-                    {% for attendee in waiting_list.all %}
-                        <tr>
-                            <td>{{ attendee.user }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
+                {% endfor %}
+            </tbody>
         {% endif %}
     
         {% else %}
