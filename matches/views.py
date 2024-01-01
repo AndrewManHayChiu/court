@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, get_list_or_404, redirect, render
 
 from .forms import MatchForm, SetForm
@@ -9,20 +10,21 @@ def match_list(request):
     context = {'matches': matches}
     return render(request, 'matches/matches.html', context)
 
+@login_required
 def create_match_and_set(request):
     if request.method == 'POST':
         match_form = MatchForm(request.POST)
         set_form = SetForm(request.POST)
         
         if match_form.is_valid() and set_form.is_valid():
-            match = match_form.save()
+            match = match_form.save(commit=False)
             set = set_form.save(commit=False)
             set.match = match
             set.save()
             return redirect('matches:match')
     
     else:
-        match_form = MatchForm()
+        match_form = MatchForm(initial={'team_one': request.user})
         set_form = SetForm()
         
     context = {

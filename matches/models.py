@@ -2,8 +2,10 @@ import uuid
 
 from datetime import datetime
 from django.db import models
+from django.db.models import Q
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 
 from members.models import Profile
@@ -11,25 +13,38 @@ from sport_sessions.models import Session
 
 # Create your models here.
 class Team(models.Model):
+    player_one = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='teams_as_player_one')
+    player_two = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='teams_as_player_two', blank=True, null=True) 
     
-    players = models.ManyToManyField(Profile, blank=True) # Blank so matches can be recorded even without knowing the opponent
-    team_name = models.TextField(blank=True) # Optional team name
+    def save(self, *args, **kwargs):
+        # Check if a team with the same players already exists
+        if self.pk is None: # Only do this for new records
+            try:                
+                if self.player_two:
+                    return Team.objects.get(
+                        Q(player_one=self.player_one, player_two=self.player_two) |
+                        Q(player_one=self.player_two, player_two=self.player_one)
+                    )
+                else:
+                    return Team.objects.get(player_one=self.player_one, player_two=None)
+            except Team.DoesNotExist:
+                pass
+        super().save(*args, **kwargs)
     
     def __str__(self):
-        return self.team_name
+        if self.player_two:
+            return f"{self.player_one} and {self.player_two}"
+        
+        else:
+            return f"{self.player_one}"
 
 class Match(models.Model):
     
     sport_choice = [
         ('badminton', 'Badminton'),
-        ('table_tennis', 'Table Tennis'),
+        # ('table_tennis', 'Table Tennis'),
     ]
-    
-    team_choice = [
-        ('team1', 'Team 1'),
-        ('team2', 'Team 2'),
-    ]
-    
+        
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     
     session = models.ForeignKey(Session, on_delete=models.CASCADE, blank=True, null=True)
@@ -38,8 +53,8 @@ class Match(models.Model):
     
     is_doubles = models.BooleanField(default=True)
     
-    team_one = models.ManyToManyField(User, related_name='team_one')
-    team_two = models.ManyToManyField(User, related_name='team_two', blank=True)
+    team_one = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='matches_as_team_one')
+    team_two = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='matches_as_team_two', blank=True, null=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -75,8 +90,8 @@ class Set(models.Model):
     match = models.ForeignKey(Match, related_name='sets', on_delete=models.CASCADE)
     set = models.IntegerField(choices=set_choice, default=1)
     winning_team = models.CharField(choices=team_choice, max_length=5)
-    winner_score = models.IntegerField(default=21)
-    loser_score = models.IntegerField()
+    team_one_score = models.IntegerField(default=21)
+    team_two_score = models.IntegerField()
     
     class Meta:
         verbose_name = 'Set'
@@ -84,15 +99,16 @@ class Set(models.Model):
     
     def __str__(self):
         return f"Match: {self.match} - Set: {self.set} - Winner: {self.winning_team}"
+    
+    def clean(self):
+        # Call the base implementation first to get a full clean.
+        super().clean()
+        
 
 class Rally(models.Model):
     
     set = models.ForeignKey(Set, on_delete=models.CASCADE, null=True)
     rally_number = models.IntegerField()
-    server = models.ForeignKey(User, on_delete=models.PROTECT, related_name='server')
-    receiver = models.ForeignKey(User, on_delete=models.PROTECT, related_name='receiver')
-    shot = models.CharField(max_length=20)
-    rally_result = models.CharField(max_length=20, blank=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

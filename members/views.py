@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.auth.models import User
 # from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy
@@ -14,6 +15,7 @@ from django.views.generic.edit import UpdateView
 from .forms import NewUserForm, EditProfileForm
 
 from .models import Profile
+from matches.models import Match
 
 # Create your views here.
 
@@ -60,7 +62,13 @@ class ProfileDetailView(generic.DetailView):
         context = super().get_context_data(**kwargs)
         profile = self.get_object()
         user = self.get_user(profile)
-        matches = (user.team_one.all() | user.team_two.all()).distinct()
+
+        # matches = (user.team_one.all() | user.team_two.all()).distinct()
+        matches = Match.objects.filter(
+            Q(team_one__player_one=user.profile) | 
+            Q(team_one__player_two=user.profile) | 
+            Q(team_two__player_one=user.profile) | 
+            Q(team_two__player_two=user.profile)).distinct()
         context['profile'] = profile
         context['user'] = user
         context['matches'] = matches

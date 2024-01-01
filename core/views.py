@@ -14,7 +14,11 @@ def index(request):
         social_rsvps = SessionRSVP.objects.filter(user=current_user)
         upcoming_sessions = social_rsvps.filter(session__date__gte=timezone.now())
 
-        matches = Match.objects.filter(Q(team_one=current_user) | Q(team_two=current_user))
+        matches = Match.objects.filter(
+            Q(team_one__player_one=current_user.profile) | 
+            Q(team_one__player_two=current_user.profile) | 
+            Q(team_two__player_one=current_user.profile) | 
+            Q(team_two__player_two=current_user.profile)).distinct()
 
         context = {
             'upcoming_sessions': upcoming_sessions,

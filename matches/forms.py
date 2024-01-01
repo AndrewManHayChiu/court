@@ -39,11 +39,10 @@ class SetForm(forms.ModelForm):
         model = Set
         
         fields = [
-            # 'match', # This is automatically added when a match is created
             'set', 
             'winning_team',
-            'winner_score',
-            'loser_score',
+            'team_one_score',
+            'team_two_score',
             ]
 
 # class RallyForm(forms.ModelForm):
