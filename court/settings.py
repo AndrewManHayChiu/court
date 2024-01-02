@@ -51,7 +51,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'azureproject.urls'
+ROOT_URLCONF = 'court.urls'
 
 TEMPLATES = [
     {
@@ -71,7 +71,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'azureproject.wsgi.application'
+WSGI_APPLICATION = 'court.wsgi.application'
 
 
 # Database
