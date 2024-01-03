@@ -5,7 +5,7 @@ from .settings import BASE_DIR
 
 ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']]
 CSRF_TRUSTED_ORIGINS = ['https://' + os.environ['WEBSITE_HOSTNAME']]
-DEBUG = os.environ['DEBUG']
+DEBUG = False
 
 # WhiteNoise configuration
 MIDDLEWARE = [
