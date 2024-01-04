@@ -21,7 +21,7 @@ if 'CODESPACE_NAME' in os.environ:
 # Application definition
 
 INSTALLED_APPS = [
-    "whitenoise.runserver_nostatic", # use whitenoise to serve static files
+    # "whitenoise.runserver_nostatic", # use whitenoise to serve static files
     
     'clubs.apps.ClubsConfig',
     'core.apps.CoreConfig',
@@ -39,6 +39,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    'wagtail.contrib.forms',
+    'wagtail.contrib.redirects',
+    'wagtail.embeds',
+    'wagtail.sites',
+    'wagtail.users',
+    'wagtail.snippets',
+    'wagtail.documents',
+    'wagtail.images',
+    'wagtail.search',
+    'wagtail.admin',
+    'wagtail',
+
+    'modelcluster',
+    'taggit',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +64,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
 ]
 
 ROOT_URLCONF = 'court.urls'
@@ -80,7 +97,7 @@ WSGI_APPLICATION = 'court.wsgi.application'
 DATABASES = {
    'default': {
        'ENGINE': 'django.db.backends.sqlite3',
-       'NAME': BASE_DIR / 'db.sqlite3',
+       'NAME': BASE_DIR / 'home/db.sqlite3',
    }
 }
 
@@ -123,6 +140,15 @@ STATICFILES_DIRS = (str(BASE_DIR.joinpath('static')),)
 STATIC_URL = 'static/'
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Wagtail
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+WAGTAIL_SITE_NAME = 'The Court'
+
+WAGTAILADMIN_BASE_URL = 'http://example.com'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
