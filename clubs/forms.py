@@ -10,6 +10,7 @@ class ClubForm(forms.ModelForm):
         fields = (
             'name',
             'description',
+            'organiser',
             'sport',
             'location',
             'day',
