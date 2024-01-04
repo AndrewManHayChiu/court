@@ -40,3 +40,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 #         'PASSWORD': conn_str_params['password'],
 #     }
 # }
+
+# In Azure, "any data outside '/home' is not persisted"
+# That means that in Azure, the database will be deleted every time the app is restarted
+# so in the Azure/production environment, I need to set the database location to this directory
+# so that the database will be persisted
+
+DATABASES = {
+   'default': {
+       'ENGINE': 'django.db.backends.sqlite3',
+       'NAME': os.path.join(BASE_DIR, '../../home', 'db.sqlite3'),
+   }
+}
