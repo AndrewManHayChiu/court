@@ -16,8 +16,8 @@ def create_club(request):
         form = ClubForm(request.POST)
         if form.is_valid():
             club = form.save(commit=False)
-            club.created_by = request.user # add current user
             club.save()
+            club.organiser.add(request.user) # Add the user creating the club as an organiser
             return redirect('clubs:club')
     else:
         form = ClubForm()
