@@ -21,7 +21,7 @@ if 'CODESPACE_NAME' in os.environ:
 # Application definition
 
 INSTALLED_APPS = [
-    # "whitenoise.runserver_nostatic", # use whitenoise to serve static files
+    "whitenoise.runserver_nostatic", # use whitenoise to serve static files
     
     'clubs.apps.ClubsConfig',
     'core.apps.CoreConfig',
