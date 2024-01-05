@@ -13,11 +13,11 @@
     
     <form method="POST">
         {% csrf_token %}
-        <h4>Match</h4>
+        <h4>Match details</h4>
         <br>
         {{ match_form|crispy }}
         <br>
-        <h4>Sets</h4>
+        <h4>Results</h4>
         <br>
         {{ set_form|crispy }}
         <button class="btn btn-dark" type="submit">Save</button>
