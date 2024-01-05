@@ -1,13 +1,24 @@
 from django.contrib import admin
 
-from .models import Session, SessionRSVP
+from .models import Session, SessionRSVP, SessionWaitlist
 
 class SessionRsvpAdmin(admin.StackedInline):
     model = SessionRSVP
+    extra = 0
     
     list_display = [
         'session',
         'user',
+    ]
+
+class SessionWaitlistAdmin(admin.StackedInline):
+    model = SessionWaitlist
+    extra = 0
+    
+    list_display = [
+        'session',
+        'user',
+        'non_user_name',
     ]
 
 class SessionAdmin(admin.ModelAdmin):
@@ -29,7 +40,7 @@ class SessionAdmin(admin.ModelAdmin):
     
     readonly_fields = ('created_at', 'updated_at', 'deleted_at')
     
-    inlines = [SessionRsvpAdmin]
-    
+    inlines = [SessionRsvpAdmin, SessionWaitlistAdmin]
+
 # Register your models here.
 admin.site.register(Session, SessionAdmin)

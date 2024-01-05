@@ -18,6 +18,7 @@ class Session(models.Model):
     doubles = models.BooleanField(default=True)
     singles = models.BooleanField(default=False)
     max_attendees = models.PositiveIntegerField(default=30, blank=True, null=True)
+    max_waitlist = models.PositiveIntegerField(default=10)
     waiting_list_enabled = models.BooleanField(default=True)
     notes = models.TextField(blank=True, null=True)
     hidden = models.BooleanField(default=False)
@@ -70,3 +71,29 @@ class SessionRSVP(models.Model):
             raise ValidationError('Sorry, this session is full.')
         super().save(*args, **kwargs)
 
+class SessionWaitlist(models.Model):
+    session = models.ForeignKey(Session, on_delete=models.CASCADE, related_name='waitlists')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='waitlists', null=True, blank=True)
+    non_user_name = models.CharField(max_length=255, null=True, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        unique_together = ('session', 'user')  # Prevents duplicates
+
+    def __str__(self):
+        if self.non_user_name:
+            return f"{self.non_user_name} - {self.session}"
+        else:
+            return f"{self.user} - {self.session}"
+
+    def save(self, *args, **kwargs):
+        if self.session.rsvps.filter(user=self.user).exists():
+            raise ValidationError("You're already on the RSVP list. There's no need to join the waitlist.")
+        if self.session.max_attendees and self.session.rsvps.count() < self.session.max_attendees:
+            raise ValidationError('This session is not full yet.')
+        if self.session.waitlists.count() >= self.session.max_waitlist:
+            raise ValidationError("The session's waitlist is full. Try again later.")
+        super().save(*args, **kwargs)
