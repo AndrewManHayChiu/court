@@ -44,6 +44,14 @@ class Match(models.Model):
         ('badminton', 'Badminton'),
         # ('table_tennis', 'Table Tennis'),
     ]
+    
+    combination_type_choice = [
+        ('MS', 'Mens Singles'),
+        ('WS', 'Womens Singles'),
+        ('MD', 'Mens Doubles'),
+        ('WD', 'Womens Doubles'),
+        ('XD', 'Mixed Doubles'),
+    ]
         
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     
@@ -52,6 +60,7 @@ class Match(models.Model):
     time = models.TimeField(default=timezone.now, blank=True, editable=True)
     
     is_doubles = models.BooleanField(default=True)
+    combination = models.CharField(choices=combination_type_choice, default='MD', max_length=2)
     
     team_one = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='matches_as_team_one')
     team_two = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='matches_as_team_two', blank=True, null=True)

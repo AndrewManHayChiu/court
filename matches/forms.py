@@ -14,7 +14,7 @@ class MatchForm(forms.ModelForm):
             'time',
             'session',
             # 'tournament',
-            'is_doubles',
+            'combination',
             'team_one',
             'team_two',
         )
@@ -32,6 +32,9 @@ class MatchForm(forms.ModelForm):
                     'placeholder': 'HH:MM',
                     'class': 'form-control',
                     'value': datetime.now().strftime('%H:%M')}),
+            'combination': forms.RadioSelect(
+                attrs={
+                    'class': 'form-check-input'}),
         }
 
 class SetForm(forms.ModelForm):
