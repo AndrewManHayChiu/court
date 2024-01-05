@@ -4,20 +4,20 @@
 {% load static %}
 
 {% block title %}
-    <img src="{% static 'images\badminton-player-coloured.svg' %}"alt="Logo" width="50" height="50">
-    <img src="{% static 'images\net-coloured.svg' %}"alt="Logo" width="50" height="50">
-    <img src="{% static 'images\badminton-player-coloured.svg' %}"alt="Logo" width="50" height="50" style="transform: scaleX(-1)">
+    <img src="{% static 'images/badminton-player-coloured.svg' %}" alt="Logo" width="50" height="50">
+    <img src="{% static 'images/net-coloured.svg' %}" alt="Logo" width="50" height="50">
+    <img src="{% static 'images/badminton-player-coloured.svg' %}" alt="Logo" width="50" height="50" style="transform: scaleX(-1)">
 {% endblock %}
 
 {% block content %}
     
     <form method="POST">
         {% csrf_token %}
-        <h4>Match</h4>
+        <h4>Match details</h4>
         <br>
         {{ match_form|crispy }}
         <br>
-        <h4>Sets</h4>
+        <h4>Results</h4>
         <br>
         {{ set_form|crispy }}
         <button class="btn btn-dark" type="submit">Save</button>

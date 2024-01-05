@@ -11,7 +11,8 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-# settings_module = 'azureproject.production' if 'WEBSITE_HOSTNAME' in os.environ else 'azureproject.settings'
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', "core.settings.dev")
+settings_module = 'court.production' if 'WEBSITE_HOSTNAME' in os.environ else 'court.settings'
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', settings_module)
 
 application = get_wsgi_application()
