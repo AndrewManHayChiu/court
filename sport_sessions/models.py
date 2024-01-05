@@ -90,6 +90,8 @@ class SessionWaitlist(models.Model):
             return f"{self.user} - {self.session}"
 
     def save(self, *args, **kwargs):
+        if self.session.rsvps.filter(user=self.user).exists():
+            raise ValidationError("You're already on the RSVP list. There's no need to join the waitlist.")
         if self.session.max_attendees and self.session.rsvps.count() < self.session.max_attendees:
             raise ValidationError('This session is not full yet.')
         if self.session.waitlists.count() >= self.session.max_waitlist:

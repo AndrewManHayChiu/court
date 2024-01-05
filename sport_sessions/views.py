@@ -84,10 +84,13 @@ class SessionRSVPCreateView(generic.View):
             # raise ValidationError('Sorry, this session is full.')
             return render(request, 'sport_sessions/session_full.html')
         
+        # if user has already rsvp'd return an error
+        if session.rsvps.filter(user=request.user).exists():
+            raise ValidationError("You've already registered")
         
         SessionRSVP.objects.create(session=session, user=request.user, is_attending=True)
         
-        return redirect('sport_sessions:session_detail', id=session.id)
+        return redirect('sport_sessions:session_detail', uuid=session.uuid)
     
 
 class AddToWaitlistView(generic.View):
@@ -100,3 +103,15 @@ class AddToWaitlistView(generic.View):
         SessionWaitlist.objects.create(session=session, user=request.user)
 
         return redirect('sport_sessions:session_detail', id=session.id)
+    
+@login_required
+def remove_from_rsvp(request, rsvp_id):
+    rsvp = get_object_or_404(SessionRSVP, id=rsvp_id)
+    session = Session.objects.get(id=rsvp.session.id)
+
+    # Check if the logged-in user is the club's organiser or the user associated with the RSVP
+    if request.user == session.club.organiser or request.user == rsvp.user:
+        rsvp.delete()
+        return redirect('sport_sessions:session_detail', uuid=session.uuid)
+
+    return redirect('sport_sessions:session_detail', uuid=session.uuid)

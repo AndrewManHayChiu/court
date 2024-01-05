@@ -126,9 +126,16 @@
                 {% for attendee in attendees.all %}
                     <tr>
                         <td>{{ attendee.user }}</td>
-                        {% if user.is_authenticated and is_organiser %}
-                            <td>{{ attendee.created_at }}</td>
-                            <td><button class="btn btn-danger btn-sm" type="submit">Delete</button></td>
+                        {% if user.is_authenticated %}
+                            {% if is_organiser or user == attendee.user %}
+                                <td>{{ attendee.created_at }}</td>
+                                <td>
+                                    <form method="post" action="{% url 'sport_sessions:remove_from_rsvp' rsvp_id=attendee.id %}">
+                                        {% csrf_token %}
+                                        <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                                    </form>
+                                </td>
+                            {% endif %}
                         {% endif %}
                     </tr>
                 {% endfor %}
