@@ -1,69 +1,87 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  <head>
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+      <!-- Bootstrap CSS -->
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+      
+      <!-- Custom CSS -->
+      <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-    <!-- Custom styles -->
-    <style>
-      .custom-profile-button-size {
-          width: 130px;
-          height: 75px;
-          font-size: 20px;
-          margin: 10px;
-          text-align: center;
-          justify-content: center;
-          align-items: center;
-          display: flex;
-      }
-    </style>
+      <!-- Custom styles -->
+      <style>
+        .custom-profile-button-size {
+            width: 130px;
+            height: 75px;
+            font-size: 20px;
+            margin: 10px;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+        }
 
-    <title>Court</title>
-</head>
+        .flex-column-vh-100 {
+              display: flex;
+              flex-direction: column;
+              min-height: 100vh;
+        }
 
-<body class="d-flex flex-column">
-    <header class="page-header">
-        <div class="container"></div>
-    </header>
-    
-    <main class="container">
-        <div class="row">
-          {% include 'navbar.html' %}
-        </div>
+        body {
+              display: flex;
+              flex-direction: column;
+              min-height: 100vh;
+        }
 
-        <div class="row">
-          <div class="col">
-              <h2>
-                {% block title %}
-                {% endblock %}
-              </h2>    
+        #footer {
+            margin-top: auto;
+        }
+
+      </style>
+
+      <title>Court</title>
+  </head>
+
+  <body class="flex-column-vh-100">
+      <header class="page-header">
+          <div class="container"></div>
+      </header>
+      
+      <main class="container">
+          <div class="row">
+            {% include 'navbar.html' %}
           </div>
-        </div>
 
-        <br>
-
-        <div class="row">
+          <div class="row">
             <div class="col">
+                <h2>
+                  {% block title %}
+                  {% endblock %}
+                </h2>    
+            </div>
+          </div>
+
+          <br>
+
+          <div class="row">
+              <div class="col">
                 {% block content %}
                 {% endblock %}    
-            </div>
-        </div>
+              </div>
+          </div>
 
-    </main>
-
-    <div id="footer">
-      {% include 'footer.html' %}
-    </div>
+      </main>
+      
+      <div id="footer" class="container">
+        {% include 'footer.html' %}
+      </div>
   
-  <!-- Optional JavaSCript -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-</body>
+    <!-- Optional JavaSCript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  </body>
+
 </html>
