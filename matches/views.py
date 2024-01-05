@@ -18,6 +18,7 @@ def create_match_and_set(request):
         
         if match_form.is_valid() and set_form.is_valid():
             match = match_form.save(commit=False)
+            match.save()
             set = set_form.save(commit=False)
             set.match = match
             set.save()

@@ -17,11 +17,11 @@ class MatchAdmin(admin.ModelAdmin):
     
     inlines = [SetAdmin]
     
-    list_display = ('id', 'session', 'date', 'is_doubles')
+    list_display = ('id', 'session', 'date', 'combination')
     
     fieldsets = (
         (None, {'fields': ['session', 'date', 'time', 'created_at', 'updated_at', 'deleted_at']}),
-        ('Type', {'fields': ['is_doubles']}),
+        ('Type', {'fields': ['combination']}),
         ('Teams', {'fields': ['team_one', 'team_two']})
     )
     
