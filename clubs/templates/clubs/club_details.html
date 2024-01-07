@@ -74,47 +74,94 @@
         <br>
 
         
-        <h4>
-            Sessions
-        </h4>
+        <h4>Sessions</h4>
+        <br>
 
         {% if user.is_authenticated and is_organiser %}
             <a class="btn btn-dark float-end" href="{% url 'sport_sessions:create_session' %}?club_id={{ club.id }}">Add session</a>
         {% endif %}
+        
+        {% if future_sessions|length > 0 or past_sessions|length > 0 %}
 
-        {% if sessions and sessions|length > 0 %}
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Session</th>
-                        <th scope="col">No. attendees</th>
-                        <th scope="col">Status</th>
-                        {% if user.is_authenticated and is_organiser %}
-                                <th scope="col">Hide from public</th>
-                            {% endif %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for session in sessions %}
+            {% if future_sessions|length > 0 %}
+            
+                <h5>Future sessions</h5>
+            
+                <table class="table">
+                    <thead>
                         <tr>
-                            <td><a href="{% url 'sport_sessions:session_detail' session.uuid %}">{{ session.date }} - {{ session.start_time }} to {{ session.end_time }}</a></td>
-                            <td>{{ session.rsvps.count }} / {{ session.max_attendees }}</td>
-                            <td>
-                                {% if session.is_full %}
-                                    <button type="button" class="btn btn-primary btn-sm" disabled>Full</button>
-                                {% else %}
-                                <button type="button" class="btn btn-success btn-sm" disabled>Available</button>
-                                {% endif %}
-                            </td>
+                            <th scope="col">Session</th>
+                            <th scope="col">No. attendees</th>
+                            <th scope="col">Status</th>
                             {% if user.is_authenticated and is_organiser %}
-                                <td>
-                                    <button class="btn btn-secondary btn-sm" type="submit">Hide</button>
-                                </td>
-                            {% endif %}
+                                    <th scope="col">Hide from public</th>
+                                {% endif %}
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {% for session in future_sessions %}
+                            <tr>
+                                <td><a href="{% url 'sport_sessions:session_detail' session.uuid %}">{{ session.date }} - {{ session.start_time }} to {{ session.end_time }}</a></td>
+                                <td>{{ session.rsvps.count }} / {{ session.max_attendees }}</td>
+                                <td>
+                                    {% if session.is_full %}
+                                        <button type="button" class="btn btn-primary btn-sm" disabled>Full</button>
+                                    {% else %}
+                                    <button type="button" class="btn btn-success btn-sm" disabled>Available</button>
+                                    {% endif %}
+                                </td>
+                                {% if user.is_authenticated and is_organiser %}
+                                    <td>
+                                        <button class="btn btn-secondary btn-sm" type="submit">Hide</button>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+            
+            <br>
+            
+            {% if past_sessions|length > 0 %}
+            
+                <h5>Past sessions</h5>
+                <br>
+            
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Session</th>
+                            <th scope="col">No. attendees</th>
+                            <th scope="col">Status</th>
+                            {% if user.is_authenticated and is_organiser %}
+                                    <th scope="col">Hide from public</th>
+                                {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for session in past_sessions %}
+                            <tr>
+                                <td><a href="{% url 'sport_sessions:session_detail' session.uuid %}">{{ session.date }} - {{ session.start_time }} to {{ session.end_time }}</a></td>
+                                <td>{{ session.rsvps.count }} / {{ session.max_attendees }}</td>
+                                <td>
+                                    {% if session.is_full %}
+                                        <button type="button" class="btn btn-primary btn-sm" disabled>Full</button>
+                                    {% else %}
+                                    <button type="button" class="btn btn-success btn-sm" disabled>Available</button>
+                                    {% endif %}
+                                </td>
+                                {% if user.is_authenticated and is_organiser %}
+                                    <td>
+                                        <button class="btn btn-secondary btn-sm" type="submit">Hide</button>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+
         {% else %}
             {% if user.is_authenticated and is_organiser %}
                 <p>You don't have any sessions.</p>

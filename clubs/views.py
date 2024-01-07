@@ -1,7 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, get_list_or_404, redirect, render
 from django.urls import reverse
+from django.utils import timezone
 from django.views import generic
+
 
 from .models import Club
 
@@ -34,11 +36,13 @@ def club(request):
 
 def club_detail(request, id):
     club = get_object_or_404(Club, id=id)
-    sessions = club.session_set.all()
+    past_sessions = club.session_set.filter(date__lt=timezone.now())
+    future_sessions = club.session_set.filter(date__gte=timezone.now())
     is_organiser = club.organiser.filter(id=request.user.id).exists()
     context = {
         'club': club,
-        'sessions': sessions,
+        'past_sessions': past_sessions,
+        'future_sessions': future_sessions,
         'is_organiser': is_organiser,
     }
     return render(request, template_name='clubs/club_details.html', context=context)

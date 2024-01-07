@@ -45,33 +45,6 @@
             </table>
         {% endif %}
         <br>
-        
-        <h4>Recent Matches</h4>
-        <br>
-        {% if matches|length == 0 %}
-            <p>You don't have any matches.</p>
-        {% else %}
-            <p>Here are your recent matches:</p>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Date</th>
-                        <th>Result</th>
-                </thead>
-                <tbody>
-                    {% for match in matches %}
-                        <tr>
-                            <td>{{ match.id }}</a></td>
-                            <td>{{ match.date }}</td>
-                            <td>{{ match.set }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% endif %}
-        
-
 
     {% else %}
         <h1 style="text-align: center;">THE COURT</h1>
@@ -88,10 +61,8 @@
         
     {% endif %}
     <br>
-    <br>
-    <br>
     <h4>Disclaimer</h4>
-    <p>This app is still in DEVELOPMENT.</p>
+    <p><i>This app is still in DEVELOPMENT.</i></p>
     <p>During development, use of this app is free.</p>
     <p>It also means that:</p> 
     <li>there are bugs and broken links</li>
