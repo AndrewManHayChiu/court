@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}
+    <img src="{% static 'images/badminton-player-coloured.svg' %}" alt="Logo" width="50" height="50">
+    <img src="{% static 'images/net-coloured.svg' %}" alt="Logo" width="50" height="50">
+    <img src="{% static 'images/badminton-player-coloured.svg' %}" alt="Logo" width="50" height="50" style="transform: scaleX(-1)">
+{% endblock %}
+
+{% block content %}
+    
+    <h1>Edit Match</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <h4>Match details</h4>
+        <br>
+        {{ match_form|crispy }}
+        <br>
+        <h4>Results</h4>
+        <br>
+        {{ set_form|crispy }}
+        <button class="btn btn-dark" type="submit">Save</button>
+    </form>
+
+{% endblock %}

@@ -57,7 +57,8 @@
                             <th scope="col">Date</th>
                             <th scope="col">Team 1</th>
                             <th scope="col">Team 2</th>
-                            <th scope="col">Set 1</th>
+                            <th scope="col">Score</th>
+                            <th scope="col">Edit</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -67,14 +68,16 @@
                                 <td>{{ match.session }}</td>
                                 <td>{{ match.date }}</td>
                                 <td>
-                                    {% for player in match.team_one.all %}
-                                        {{ player }}
-                                    {% endfor %}
+                                    {{ match.team_one.player_one.user.username }}
+                                    {% if match.team_one.player_two %} 
+                                        & {{ match.team_one.player_two.user.username }}
+                                    {% endif %}
                                 </td>
                                 <td>
-                                    {% for player in match.team_two.all %}
-                                        {{ player }}
-                                    {% endfor %}
+                                    {{ match.team_two.player_one.user.username }}
+                                    {% if match.team_two.player_two %} 
+                                        & {{ match.team_two.player_two.user.username }}
+                                    {% endif %}
                                 </td>
                                 <td>
                                     <table>
@@ -87,13 +90,16 @@
                                         <tbody>
                                             {% for set in match.sets.all %}
                                                 <tr>
-                                                    <td>{{ set.winner_score }}</td>
+                                                    <td>{{ set.team_one_score }}</td>
                                                     <td>-</td>
-                                                    <td>{{ set.loser_score }}</td>
+                                                    <td>{{ set.team_two_score }}</td>
                                                 </tr>
                                             {% endfor %}
                                         </tbody>
                                     </table>
+                                </td>
+                                <td>
+                                    <a class="btn btn-dark" href="{% url 'matches:edit_match' match.id %}">Edit</a>
                                 </td>
                             </tr>
                         {% endfor %}
