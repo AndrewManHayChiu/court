@@ -11,4 +11,6 @@ urlpatterns = [
     path('<int:id>/edit/', views.edit_session, name='edit_session'),
     path('<int:id>/add_to_waitlist/', views.AddToWaitlistView.as_view(), name='add_to_waitlist'),
     path('rsvp/<int:rsvp_id>/delete/', views.remove_from_rsvp, name='remove_from_rsvp'),
+    path('attendance/<int:rsvp_id>', views.toggle_attendance, name='toggle_attendance'),
+    path('payment/<int:rsvp_id>', views.toggle_payment, name='toggle_payment'),
 ]

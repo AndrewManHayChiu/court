@@ -47,8 +47,9 @@ class SessionRSVP(models.Model):
     session = models.ForeignKey(Session, on_delete=models.CASCADE, related_name='rsvps')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     is_attending = models.BooleanField(default=False)
+    attended = models.BooleanField(default=False)
     paid = models.BooleanField(default=False)
-    payment_method = models.CharField(max_length=10, choices=payment_method_choices)
+    payment_method = models.CharField(max_length=10, choices=payment_method_choices, default='cash', blank=True, null=True)
     
     # Allow admins to add non-users to the RSVP list
     non_user_name = models.CharField(max_length=255, null=True, blank=True)
