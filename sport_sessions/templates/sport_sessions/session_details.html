@@ -114,28 +114,60 @@
         </script>
 
         <table class="table">
-            <thead></thead>
-            <tbody>
+            <thead>
                 <tr>
-                    <td><b>Name</b></td>
+                    <td>#</td>
+                    <td>Name</td>
+                    <td>Added</td>
                     {% if user.is_authenticated and is_organiser %}
-                        <td><b>Added</b></td>
-                        <td><b>Action</b></td>
+                        <td>Remove</td>
+                        <td>Attendance</td>
+                        <td>Payment</td>
+                        <td>Payment Method</td>
                     {% endif %}
                 </tr>
+            </thead>
+
+            <tbody>
                 {% for attendee in attendees.all %}
                     <tr>
+                        <td>{{ forloop.counter }}</td>
                         <td>{{ attendee.user }}</td>
+                        <td>{{ attendee.created_at }}</td>
                         {% if user.is_authenticated %}
                             {% if is_organiser or user == attendee.user %}
-                                <td>{{ attendee.created_at }}</td>
                                 <td>
                                     <form method="post" action="{% url 'sport_sessions:remove_from_rsvp' rsvp_id=attendee.id %}">
                                         {% csrf_token %}
-                                        <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                                        <button class="btn btn-danger btn-sm" type="submit">Remove</button>
                                     </form>
                                 </td>
                             {% endif %}
+                        {% endif %}
+                        {% if user.is_authenticated and is_organiser %}
+                            <td>
+                                <form method="post" action="{% url 'sport_sessions:toggle_attendance' rsvp_id=attendee.id %}">
+                                    {% csrf_token %}
+                                    {% if not attendee.attended %}
+                                        <button class="btn btn-success btn-sm" type="submit">Mark as attended</button>
+                                    {% else %}
+                                        <button class="btn btn-danger btn-sm" type="submit">Unmark attendance</button>
+                                    {% endif %}
+                                </form>
+                            </td>
+                            
+                            <td>
+                                <form method="post" action="{% url 'sport_sessions:toggle_payment' rsvp_id=attendee.id %}">
+                                    {% csrf_token %}
+                                    {% if not attendee.paid %}
+                                        <button class="btn btn-success btn-sm" type="submit">Mark as paid</button>
+                                    {% else %}
+                                        <button class="btn btn-danger btn-sm" type="submit">Unmark payment</button>
+                                    {% endif %}
+                                </form>
+                            </td>
+
+                            <td>{{ attendee.payment_method }}</td>
                         {% endif %}
                     </tr>
                 {% endfor %}

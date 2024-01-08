@@ -1,7 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
-from django.shortcuts import get_object_or_404, get_list_or_404, redirect, render
-from django.urls import reverse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views import generic
 
@@ -113,5 +112,27 @@ def remove_from_rsvp(request, rsvp_id):
     if request.user == session.club.organiser or request.user == rsvp.user:
         rsvp.delete()
         return redirect('sport_sessions:session_detail', uuid=session.uuid)
+
+    return redirect('sport_sessions:session_detail', uuid=session.uuid)
+
+def toggle_attendance(request, rsvp_id):
+    rsvp = get_object_or_404(SessionRSVP, id=rsvp_id)
+    session = Session.objects.get(id=rsvp.session.id)
+    
+    if request.method == 'POST':
+            rsvp.attended = not rsvp.attended
+            rsvp.save()
+            return redirect('sport_sessions:session_detail', uuid=session.uuid)
+
+    return redirect('sport_sessions:session_detail', uuid=session.uuid)
+
+def toggle_payment(request, rsvp_id):
+    rsvp = get_object_or_404(SessionRSVP, id=rsvp_id)
+    session = Session.objects.get(id=rsvp.session.id)
+    
+    if request.method == 'POST':
+            rsvp.paid = not rsvp.paid
+            rsvp.save()
+            return redirect('sport_sessions:session_detail', uuid=session.uuid)
 
     return redirect('sport_sessions:session_detail', uuid=session.uuid)
